@@ -1,17 +1,24 @@
 name: Post welcome comment
+
 on:
   pull_request:
     types: [opened]
+
 permissions:
   pull-requests: write
+
 jobs:
   build:
     name: Post welcome comment
-    runs-on: ubunty-latest
+    runs-on: ubuntu-latest
+
     steps:
-       - name: Authenticate GitHub CLI
-         run: gh auth login --with-token <<< "${{secret.GITHUB_TOKEN}}"
-       - name: Post welcome comment
-         run: gh pr comment ${{github.event.pull_request.html_url}} --body "Welcome to the repository!"
-    
-    
+      # Step 1: Authenticate GitHub CLI
+      - name: Authenticate GitHub CLI
+        run: |
+          gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+      # Step 2: Post a welcome comment on the pull request
+      - name: Post welcome comment
+        run: |
+          gh pr comment ${{ github.event.pull_request.html_url }} --body "Welcome to the repository!"
